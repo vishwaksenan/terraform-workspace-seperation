@@ -84,6 +84,11 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
+    # Check into the Organization Terraform workspace
+    - name: Terraform Workspace
+      id: workspace
+      run: terraform workspace select dev
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
