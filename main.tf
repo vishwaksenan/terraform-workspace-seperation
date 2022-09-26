@@ -28,7 +28,7 @@ resource "aws_instance" "temp_aws_instance" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = terraform.workspace == "temp-app-prod" ? "iam_for_lambda" : "iam_for_lambda_dev"
 
   assume_role_policy = <<EOF
 {
