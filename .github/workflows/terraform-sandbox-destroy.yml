@@ -42,21 +42,20 @@
 #       with:
 #         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-name: 'Terraform'
+name: 'Terraform Sandbox Destroy'
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+  schedule:
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: read
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform Sandbox Destroy'
     runs-on: ubuntu-latest
-    environment: production
+    environment: sandbox
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -78,7 +77,7 @@ jobs:
     - name: Terraform Init
       run: terraform init
       env:
-        TF_WORKSPACE: prod
+        TF_WORKSPACE: dev
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
@@ -87,7 +86,7 @@ jobs:
     # Check into the Organization Terraform workspace
     - name: Terraform Workspace
       id: workspace
-      run: terraform workspace select prod
+      run: terraform workspace select dev
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -95,7 +94,11 @@ jobs:
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
+    - name: Terraform Destroy
       # if: github.event.pull_request.merged == 'true' && github.event.review.state == 'approved'
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terraform destroy -auto-approve -input=false
+
+    name: Set deployment status to [inactive]
+    uses: rsotnychenko/deployment-status-update@0.2.0
+    with:
+      status: inactive
