@@ -23,10 +23,12 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "aws_access_key" {
-  type = string
+variable "AWS_SECRET_ACCESS_KEY" {
+  type    = string
+  default = ""
 }
 
-variable "aws_secret_key" {
-  type = string
+variable "AWS_ACCESS_KEY_ID" {
+  type    = string
+  default = ""
 }
