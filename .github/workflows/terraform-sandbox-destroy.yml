@@ -77,7 +77,7 @@ jobs:
     - name: Terraform Init
       run: terraform init
       env:
-        TF_WORKSPACE: dev
+        TF_WORKSPACE: app-dev
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
@@ -86,7 +86,7 @@ jobs:
     # Check into the Organization Terraform workspace
     - name: Terraform Workspace
       id: workspace
-      run: terraform workspace select dev
+      run: terraform workspace select app-dev
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
