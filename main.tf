@@ -2,7 +2,7 @@ terraform {
   backend "remote" {
     organization = "tempdev"
     workspaces {
-      prefix = "temp-app-"
+      prefix = "temp-"
     }
   }
   required_providers {
